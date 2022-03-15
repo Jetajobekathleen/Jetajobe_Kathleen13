@@ -1,0 +1,186 @@
+package com.example.Main;
+import com.company.CashRegister;
+import com.company.Dispenser;
+import java.util.*;
+
+public class Main {
+    static Scanner console = new Scanner(System.in);
+        
+    public static void main(String[] args)
+        {
+            CashRegister cashRegister = new CashRegister();   // step 1
+            Dispenser Candy = new Dispenser(100, 50);         // step 2
+            Dispenser Chips = new Dispenser(100, 65);         // step 2
+            Dispenser Gum =   new Dispenser(75, 45);          // step 2
+            Dispenser Cookies = new Dispenser(100, 85);       // step 2
+
+            int choice;   //variable to hold the selection    // step 3
+
+            showSelection();                                  // step 4
+            choice = console.nextInt();                       // step 5
+            
+            while (choice != 9)                               // step 6
+            {                            
+                switch (choice)                               // step 6a
+                {                            
+                    case 1:
+                        sellProduct(Candy, cashRegister);
+                        break;
+                    case 2:
+                        sellProduct(Chips, cashRegister);
+                        break;
+                    case 3:
+                        sellProduct(Gum, cashRegister);
+                        break;
+                    case 4:
+                        sellProduct(Cookies, cashRegister);
+                        break;
+
+                    default:
+                        System.out.println("Invalid Selection");
+                }// end switch
+                showSelection();                       // step 6b
+                choice = console.nextInt();            // step 6c
+            }//end while
+        } // end main
+     private static void showSelection(){
+     }
+    // showSelected
+       void showSelected() {
+        System.out.println("*****WELCOME TO GYM"
+                + " Candy Vend" +
+                "" +
+                "" +
+                "ing Machine*****");
+        System.out.println(" To Select an item");
+        System.out.println(" 1 for Candy ");
+        System.out.println(" 2 for Chips ");
+        System.out.println(" 3 for Gum ");
+        System.out.println(" 4 for Cookies ");
+        System.out.println(" 9 to exit ");
+    } // end showSelection
+
+    public static void sellProduct(Dispenser product,
+                                   CashRegister cRegister) {
+        {
+            int price;                           //variable to hold the product pricr
+            int coinsInserted;                   //variable to hold the amount entered
+            int coinsRequired;                   //variable to show th extra amount
+            // needed
+            if (product.getProductCount() > 0)          // step 1
+            {
+                price = product.getProductCost();  // step 1a
+                coinsRequired = price;             // step 1b
+                coinsInserted = 0;                 // step 1c
+
+                while (coinsRequired > 0) {        // step 1d
+                    System.out.print("Please Deposit" +
+                            "coinsRequired" +
+                            "cent :");           // step 1d.i
+                    coinsInserted = coinsInserted
+                            + console.nextInt(); // step 1d.ii
+                    coinsRequired = price
+                            - coinsInserted;     // step 1d.iii
+                }
+                System.out.println();
+                cRegister.acceptAmount(coinsInserted);
+                product.makeSale();
+
+                System.out.print("Collect your Item" +
+                        "at the bottom and" +
+                        "enjoy.\n");
+            } else
+                System.out.print("Sorry this item" +
+                        " is sold out.\n");
+        } // end sellProduct
+
+        //  cash Register
+        class CashRegister {
+            private int cashOnHand;    // variablel to store the cash
+
+            // in the register
+            // Default construction to set the cash
+            // in thhe register to 500 cents
+            //Postcondition: cashOnHand = 500
+            public CashRegister() {
+                cashOnHand = 500;
+            }
+
+            //Constructor with parameters to set the cash i
+            // the register to a specific amount
+            // Postcondition; cashOnHand = cashIn
+            public CashRegister(int cashIn) {
+                if (cashIn >= 0)
+                    cashOnHand = cashIn;
+                else
+                    cashOnHand = 500;
+            }
+
+            // Method to show the current amount in the cash registar
+            // Postcondition: The value of the instance variable
+            //                   cashOnHand is returned.
+            public int currentBalance() {
+                return cashOnHand;
+            }
+
+            // Method to receive the amount deposition by
+            // the customer and update the amount in the register
+            // Postcondition: cashOnHand = cashOnHand + amountIn
+            public void acceptAmount(int amountIn) {
+                cashOnHand = cashOnHand + amountIn;
+            }
+        }
+
+
+        // class Dispenser
+        class Dispenser {
+            private int numberOfItem;    // variable to store the number of
+            // items in the dispenser
+            private int cost;      //variable to store the cost of an item
+
+            // Default construction to set  the cost and number of
+            // items to the default values
+            // Postcondition : numberOfItem = 50; cost = 50;
+            public Dispenser() {
+                numberOfItem = 50;
+                cost = 50;
+            }
+
+            // Constructor with parameters to set the cost and number
+            // Of items in the dispenser speciefed by the user
+            // Postcondition : numberOfItems = setOfItems;
+            //                 cost = setcost;
+            public Dispenser(int setNoOfItems, int setCost) {
+                if (setNoOfItems >= 0)
+                    setNoOfItems = setCost;
+                else ;
+                int setNoOfItem = 50;
+                if (setCost >= 0)
+                    cost = setCost;
+                else
+                    cost = 50;
+            }
+
+            //Method to show the number of items in the dispenser
+            // Postcondition : The value of the instance variable
+            //                 numberOfItems is returned
+            public int getProductCount() {
+                return numberOfItem;
+            }
+
+            // Method to show the cost of the item
+            // Postcondition : The value of the instance
+            //                variable cost is returned.
+            public int getProductCost() {
+                return cost;
+            }
+
+            //Methos to reduce the number of item by 1
+            // Postcondition : numberOfItems = numberOfItems -1
+            public void makeSale() {
+                numberOfItem--;
+            }
+        } // end depenser
+
+    }
+}
